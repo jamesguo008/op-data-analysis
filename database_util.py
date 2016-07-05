@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import traceback
 from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -18,6 +19,7 @@ def session_scope():
         yield session
         session.commit()
     except Exception as e:
+        traceback.print_exception(e)
         session.rollback()
     finally:
         session.close()
