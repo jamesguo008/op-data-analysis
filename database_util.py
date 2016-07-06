@@ -2,12 +2,13 @@
 
 import traceback
 from contextlib import contextmanager
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 db_engine = create_engine('mysql+pymysql://op_data_analysis:op_data_analysis@sdcm210:3406/op_data_analysis?charset=utf8',
                           encoding='utf-8',
-                          echo=True,
+                          echo=False,
                           pool_size=4)
 db_session = sessionmaker(bind=db_engine, autocommit=False, autoflush=False)
 
