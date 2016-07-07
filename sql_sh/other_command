@@ -1,0 +1,2 @@
+-----------------------------------export hive data, separate by tab(untested)-----------------------------------
+hive -e 'select books from table' > /home/lvermeer/temp.tsv
