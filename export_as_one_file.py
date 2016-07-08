@@ -64,20 +64,25 @@ with session_scope() as db:
                 if factory_sequence_id == '':
                     factory = FACTORY_PUBLIC
                 else:
-                    factory = factory_sequence_id + '(' + factory_name + ')'
+                    factory = factory_name + '(' + factory_sequence_id + ')'
 
         sheet.write(cur_row, cur_col, user_id)
         cur_col += 1
         sheet.write(cur_row, cur_col, factory)
         cur_col += 1
 
-        for col in range(2, max_col + 1, 1):
-            sheet.write(cur_row, col, 0)
+#        for col in range(2, max_col + 1, 1):
+#            sheet.write(cur_row, col, 0)
         for row in trace_rows:
             time = row['time']
             if row['time'] >= MAX_DATE:
                 continue
-            sheet.write(cur_row, date_col_dict[row['time']], row['privilege_level'])
+            privilege_level = row['privilege_level']
+            if privilege_level == 1:
+                term = '积分'
+            elif privilege_level == 2:
+                term = '充值'
+            sheet.write(cur_row, date_col_dict[row['time']], term)
         print("finish processing user_id: ", user_id)
 
 book.close()
