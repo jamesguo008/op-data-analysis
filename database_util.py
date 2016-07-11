@@ -2,6 +2,7 @@
 
 import traceback
 from contextlib import contextmanager
+from sys import exc_info
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -20,7 +21,8 @@ def session_scope():
         yield session
         session.commit()
     except Exception as e:
-        traceback.print_exception(e)
+        etype, val, tb = exc_info()
+        traceback.print_exception(etype, val, tb)
         session.rollback()
     finally:
         session.close()

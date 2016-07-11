@@ -49,3 +49,9 @@ def add_day(n, base_date=BASE_DATE):
 
 def format_date(time):
     return time.strftime("%Y-%m-%d")
+
+
+def ifnull(var, val):
+    if var is None:
+        return val
+    return var
