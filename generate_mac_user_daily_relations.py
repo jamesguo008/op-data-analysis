@@ -91,7 +91,7 @@ def generate_user_session_trace(user_id):
                     record.end_time = revoked_at
                     is_need_push = True
                 else:
-                    pass
+                    record.end_time = expired_at
 
             if is_need_push:
                 records.append(record)
@@ -116,13 +116,13 @@ def generate_user_session_trace(user_id):
 
 max_user_id = get_max_user_id()
 start_time = datetime.now()
-with ThreadPoolExecutor(max_workers=16) as executor:
+with ThreadPoolExecutor(max_workers=12) as executor:
     for i in range(1, max_user_id + 1, 1):
-#        generate_user_session_trace(i)
+#    generate_user_session_trace(66466)
         executor.submit(generate_user_session_trace, i)
 end_time = datetime.now()
 
-print('total time eclapsed: ', end_time - start_time)
+print('total time elapsed: ', end_time - start_time)
 
 
 

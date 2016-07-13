@@ -55,3 +55,12 @@ def ifnull(var, val):
     if var is None:
         return val
     return var
+
+
+def date_range(start_date, end_date):
+    if start_date <= end_date:
+        for n in range((end_date - start_date).days + 1):
+            yield start_date + timedelta(days=n)
+    else:
+        for n in range((start_date - end_date).days + 1):
+            yield start_date - timedelta(days=n)
