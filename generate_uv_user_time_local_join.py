@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 from sqlalchemy.sql import text
 
 from database_util import session_scope
-from toolkit import date_range, BASE_DATE, MAX_DATE
 
 
 class UserUsage:
@@ -121,10 +119,35 @@ def generate_uv_user_time(time, factory_dict=None):
 
 start_time = datetime.now()
 
-user_factory_dict = generate_user_factory_dict()
-with ThreadPoolExecutor(max_workers=8) as executor:
-    for time in date_range(BASE_DATE, MAX_DATE):
-        executor.submit(generate_uv_user_time, time, user_factory_dict)
+#user_factory_dict = generate_user_factory_dict()
+#with ThreadPoolExecutor(max_workers=8) as executor:
+#    for time in date_range(BASE_DATE, MAX_DATE):
+#        executor.submit(generate_uv_user_time, time, user_factory_dict)
+
+time = datetime(2015, 11, 1)
+mac_user_relations = generate_mac_user_relations(time)
+online_macs = get_wifi_auth_online_macs(time)
+
+online_user_id_set = set()
+empty_mac = set()
+distinct_mac = set()
+
+for mac in online_macs:
+    distinct_mac.add(mac)
+    user_id_list = mac_user_relations.get(mac)
+
+    if user_id_list is None:
+        empty_mac.add(mac)
+        continue
+
+    for user_id in user_id_list:
+        online_user_id_set.add(user_id)
+
+print(distinct_mac.__len__())
+print(online_user_id_set.__len__())
+print(empty_mac.__len__())
+
+
 end_time = datetime.now()
 
 print('total time elapsed: ', end_time - start_time)
